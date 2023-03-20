@@ -11,7 +11,7 @@ class Laptop {
 
   Laptop(
       {
-        this.imgurl,
+         this.imgurl,
         this.id,
       required this.company,
       required this.condition,

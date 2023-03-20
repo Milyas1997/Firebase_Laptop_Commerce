@@ -247,6 +247,9 @@ class _ProductFormState extends State<ProductForm> {
                 IconButton(
                     onPressed: () async {
                       try {
+                        setState(() {
+                          
+                        });
                         ImagePicker imagePicker = ImagePicker();
                         XFile? filesource = await imagePicker.pickImage(
                             source: ImageSource.gallery);

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:laptop_commerce/Database/database_service.dart';
 import 'package:laptop_commerce/Model/Laptop.dart';
 
-import '../AdminPanel/input_data_copy.dart';
+import '../AdminPanel/input_data.dart';
 import '../AdminPanel/update_data.dart';
 import 'login_screen.dart';
 
@@ -121,7 +121,7 @@ class _ShowDataState extends State<ShowData> {
                                     child: Text(
                                         listdata[index].imgurl.toString())),
                                 ListTile(
-                                  leading: Text(listdata[index].imgurl.toString()),
+                                  leading: Text(listdata[index].model),
                                   title: Text(listdata[index].company),
                                   subtitle: Text('SSD:${listdata[index].ssd}'),
                                   trailing:

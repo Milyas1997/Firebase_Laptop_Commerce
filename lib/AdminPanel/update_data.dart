@@ -272,36 +272,21 @@ class _UpdateState extends State<Update> {
                             ssd: _ssd.text,
                             price: _price.text);
                         try {
-                          // await FirebaseFirestore.instance
-                          //     .collection('Inventory')
-                          //     .doc(FirebaseAuth.instance.currentUser!.uid)
-                          //     .collection('inventorylist')
-                          //     .doc(widget.id['ID'])
-                          //     .update({
-                          //   'Company': laptop.company,
-                          //   'Condition': laptop.condition,
-                          //   'HDD': laptop.hDD,
-                          //   'Model': laptop.model,
-                          //   'Price': laptop.price,
-                          //   'RAM': laptop.rAM,
-                          //   'SSD': laptop.ssd,
-                          // });
-
                           await DatabaseHelper()
                               .updateInventory(laptop, widget.objid);
-                            
-                             CoolAlert.show(
-                        context: context,
-                        type: CoolAlertType.success,
-                        text: "Your Data was Updted!",
-                      );
+
+                          CoolAlert.show(
+                            context: context,
+                            type: CoolAlertType.success,
+                            text: "Your Data was Updted!",
+                          );
                         } catch (e) {
-                           CoolAlert.show(
-                        context: context,
-                        type: CoolAlertType.error,
-                        text: e.toString(),
-                      );
-                        } 
+                          CoolAlert.show(
+                            context: context,
+                            type: CoolAlertType.error,
+                            text: e.toString(),
+                          );
+                        }
 
                         // print('After updation new value of ssd: $_ssd');
 
