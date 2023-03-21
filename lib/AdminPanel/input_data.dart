@@ -247,9 +247,7 @@ class _ProductFormState extends State<ProductForm> {
                 IconButton(
                     onPressed: () async {
                       try {
-                        setState(() {
-                          
-                        });
+                        setState(() {});
                         ImagePicker imagePicker = ImagePicker();
                         XFile? filesource = await imagePicker.pickImage(
                             source: ImageSource.gallery);
@@ -262,7 +260,9 @@ class _ProductFormState extends State<ProductForm> {
                             .child(randomNumber);
                         await ref.putFile(File(filesource!.path));
                         imgUrl = await ref.getDownloadURL();
+                        if (imgUrl.isEmpty) return;
                       } catch (e) {
+                        print('Gallery image Exception: ${e.toString()}');
                         CoolAlert.show(
                           context: context,
                           type: CoolAlertType.error,

@@ -11,12 +11,11 @@ class DatabaseHelper {
 
   Future<bool> authenticateWithEmailAndPassword(email, password) async {
     try {
-     
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException  catch (e) {
       if (e.code == 'weak-password') {
         return false;
       } else if (e.code == 'email-already-in-use') {

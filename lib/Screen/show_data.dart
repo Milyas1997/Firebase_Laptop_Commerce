@@ -28,29 +28,10 @@ class _ShowDataState extends State<ShowData> {
   late Laptop laptopobj;
   List<Laptop> listdata = [];
 
-  // Future<void> getData() async {
-  //   final _firestorinstance =
-  //       await FirebaseFirestore.instance.collection('Inventory').snapshots();
-  //   await for (var snapshot in _firestorinstance) {
-  //     for (var docss in snapshot.docs) {
-  //       laptopobj = Laptop.fromSnapshot(docss);
-  //       listdata.add(laptopobj);
-
-  //       //print('Price are:${laptopobj.Price}');
-  //       //print(docs.runtimeType);
-  //       //print(docss.data());
-  //       //final data = await docss.data;
-  //     }
-
-  //     // Future<List<Laptop>> listdata = getData();
-  //   }
-  // }
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushReplacement(
@@ -58,7 +39,7 @@ class _ShowDataState extends State<ShowData> {
             MaterialPageRoute(builder: (context) => const ProductForm()),
           );
         },
-        child: const Icon(  Icons.add),
+        child: const Icon(Icons.add),
       ),
       appBar: AppBar(
         actions: [
@@ -76,12 +57,12 @@ class _ShowDataState extends State<ShowData> {
         title: const Text(
           'Inventory Avaliable',
           style: TextStyle(
-              fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+              fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
       body: Padding(
-          padding: const EdgeInsets.all(18.0),
+          padding: const EdgeInsets.all(12.0),
           child: StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection('Inventory')
@@ -90,77 +71,136 @@ class _ShowDataState extends State<ShowData> {
                   .snapshots(),
               builder: ((context, snapshot) {
                 if (snapshot.hasData) {
-                  
-                  
                   listdata = DatabaseHelper().getData(snapshot);
-                  //print(listdata);
-                  // Map<String, dynamic> mydatasnap;
-                  // List<QueryDocumentSnapshot<Map<String, dynamic>>> inventoryfield = snapshot.data!.docs;
-                  // for (QueryDocumentSnapshot<Map<String, dynamic>> snap in inventoryfield) {
-                  //   mydatasnap = snap.data();
-                  //  // print('mydatasnap are: $mydatasnap');
-                  //   var datafirst = Laptop.fromSnapshot(mydatasnap);
 
-                  //   listdata.add(datafirst);
-                  // }
                   return ListView.builder(
                       itemCount: listdata.length,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: double.infinity,
-                            height: 140,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Colors.blueGrey),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                    child: Text(
-                                        listdata[index].imgurl.toString())),
-                                ListTile(
-                                  leading: Text(listdata[index].model),
-                                  title: Text(listdata[index].company),
-                                  subtitle: Text('SSD:${listdata[index].ssd}'),
-                                  trailing:
-                                      Text('Price:${listdata[index].price}'),
-
-                                  //leading: Text(ssd),
-                                ),
-                                GestureDetector(
-                                  onTap: () async {
-                                    Laptop laptop = Laptop(
-                                        id: listdata[index].id,
-                                        company: listdata[index].company,
-                                        condition: listdata[index].condition,
-                                        hDD: listdata[index].hDD,
-                                        model: listdata[index].model,
-                                        rAM: listdata[index].rAM,
-                                        ssd: listdata[index].rAM,
-                                        price: listdata[index].price);
-
-                                    //we have got ID on three different way follow as under
-
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Update(
-                                              objid: listdata[index].id,
-                                              laptopobj: laptop,
-                                              id: snapshot.data!.docs[index])),
-                                    );
-                                  },
-                                  child: Container(
-                                    height: 40,
-                                    width: 60,
-                                    color: Colors.red,
-                                    child: const Center(child: Text('Update')),
-                                  ),
-                                )
-                              ],
-                            ),
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: Column(
+                            children: [
+                              Container(
+                                width: double.infinity,
+                                height: 160,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Colors.blueGrey),
+                                child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        width: 130,
+                                        height: 160,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            color: Colors.green,
+                                            border: Border.all(
+                                                color: Colors.black, width: 3)),
+                                        child: Image.network(
+                                          '${listdata[index].imgurl}',
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Company: ${listdata[index].company}',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10,
+                                                  fontWeight:
+                                                      FontWeight.bold),
+                                            ),
+                                            Text(
+                                              'Model: ${listdata[index].model}',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10,
+                                                  fontWeight:
+                                                      FontWeight.bold),
+                                            ),
+                                            Text(
+                                              'HDD: ${listdata[index].hDD}',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10,
+                                                  fontWeight:
+                                                      FontWeight.bold),
+                                            ),
+                                            Text(
+                                              'SSD: ${listdata[index].ssd}',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10,
+                                                  fontWeight:
+                                                      FontWeight.bold),
+                                            ),
+                                            Text(
+                                              'Company: ${listdata[index].company}',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10,
+                                                  fontWeight:
+                                                      FontWeight.bold),
+                                            ),
+                                            Text(
+                                              'Price: ${listdata[index].price}',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10,
+                                                  fontWeight:
+                                                      FontWeight.bold),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              laptopobj = listdata[index];
+                                              Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        Update(
+                                                          laptopobj:
+                                                              laptopobj,
+                                                        )),
+                                              );
+                                            },
+                                            child: Container(
+                                              height: 50,
+                                              width: 80,
+                                              child: Center(
+                                                  child: Text('Update')),
+                                              color: Colors.blue,
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 50,
+                                            width: 80,
+                                            child:
+                                                Center(child: Text('Delete')),
+                                            color: Colors.red,
+                                          )
+                                        ],
+                                      )
+                                    ]),
+                              ),
+                            ],
                           ),
                         );
                       });

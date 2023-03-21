@@ -10,9 +10,8 @@ class Laptop {
   String? imgurl;
 
   Laptop(
-      {
-         this.imgurl,
-        this.id,
+      {this.imgurl,
+      this.id,
       required this.company,
       required this.condition,
       required this.hDD,
@@ -23,6 +22,7 @@ class Laptop {
 
   tojson() {
     return {
+      'imgurl'
       'Model': model,
       'Price': price,
       'Ram': rAM,
@@ -36,6 +36,7 @@ class Laptop {
   factory Laptop.fromSnapshot(Map<String, dynamic> document) {
     // final dataa = document.data()!;
     return Laptop(
+        imgurl: document['imgurl'],
         id: document['ID'],
         company: document['Company'] ?? "N/A",
         condition: document['Condition'] ?? "N/A",

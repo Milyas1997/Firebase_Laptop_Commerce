@@ -9,15 +9,13 @@ import '../Screen/show_data.dart';
 class Update extends StatefulWidget {
   final Laptop laptopobj;
   // ignore: prefer_typing_uninitialized_variables
-  final id;
-  // ignore: prefer_typing_uninitialized_variables
-  final objid;
 
-  const Update(
-      {super.key,
-      required this.laptopobj,
-      required this.id,
-      required this.objid});
+  // ignore: prefer_typing_uninitialized_variables
+
+  const Update({
+    super.key,
+    required this.laptopobj,
+  });
 
   @override
   // ignore: library_private_types_in_public_api
@@ -273,7 +271,7 @@ class _UpdateState extends State<Update> {
                             price: _price.text);
                         try {
                           await DatabaseHelper()
-                              .updateInventory(laptop, widget.objid);
+                              .updateInventory(laptop, widget.laptopobj.id);
 
                           CoolAlert.show(
                             context: context,
