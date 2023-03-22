@@ -1,6 +1,6 @@
 import 'package:cool_alert/cool_alert.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:laptop_commerce/Database/database_service.dart';
 import 'package:laptop_commerce/Screen/show_data.dart';
 import 'package:laptop_commerce/Screen/sign_up.dart';
 import '../Custom_Widget/Custom_Button.dart';
@@ -83,29 +83,50 @@ class _LoginState extends State<Login> {
 
                   //Login Here..
                   onTap: () async {
-                   await DatabaseHelper()
-                        .authenticateWithEmailAndPassword(email, password);
-                   // ignore: unrelated_type_equality_checks
-                   if(bool==true){
-                     // ignore: use_build_context_synchronously
-                     Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ShowData()),
-                        );
-   
-                   }
-                   else{
-                     // ignore: use_build_context_synchronously
-                     CoolAlert.show(
+                    try {
+                      await FirebaseAuth.instance.signInWithEmailAndPassword(
+                        email: email.text,
+                        password: password.text,
+                      );
+                      Navigator.pushReplacement(
+                        context,
+                         MaterialPageRoute(
+                          builder: (context) =>
+                              const ShowData(),
+                        ),
+                      );
+                    } on FirebaseAuthException catch (e) {
+                      CoolAlert.show(
                           context: context,
-                          type: CoolAlertType.error,
-                          text:  'Did not Log in',
-                        );
+                          type: CoolAlertType.warning,
+                          title: e.message);
+                      if (e.code == 'weak-password') {
+                      } else if (e.code == 'email-already-in-use') {}
+                    }
 
-                   }
-                   
-                   
+                    // try{
+                    //   await DatabaseHelper()
+                    //     .authenticateWithEmailAndPassword(email, password);
+                    // // ignore: unrelated_type_equality_checks
+                    // if (bool == true) {
+                    //   // ignore: use_build_context_synchronously
+                    //   Navigator.pushReplacement(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const ShowData()),
+                    //   );
+                    // }
+                    //   // ignore: use_build_context_synchronously
+
+                    // } catch(e){
+                    //    CoolAlert.show(
+                    //     context: context,
+                    //     type: CoolAlertType.error,
+                    //     text: e.toString(),
+                    //   );
+
+                    // }
+
                     // try {
                     //   final credential = await FirebaseAuth.instance
                     //       .signInWithEmailAndPassword(
@@ -132,10 +153,10 @@ class _LoginState extends State<Login> {
                     //       text: e.code.toUpperCase(),
                     //     );
                     //   }
-                   // }
+                    // }
                   },
                   child: const CustomButton(buttonText: 'Log in')),
-             const SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               GestureDetector(

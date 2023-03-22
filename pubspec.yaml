@@ -41,6 +41,7 @@ dependencies:
   cool_alert: ^2.0.1
   image_picker: ^0.8.7
   firebase_storage: ^11.0.16
+ 
 
 dev_dependencies:
   flutter_test:

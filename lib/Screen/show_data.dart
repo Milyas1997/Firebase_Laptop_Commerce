@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:laptop_commerce/Database/database_service.dart';
@@ -102,6 +103,7 @@ class _ShowDataState extends State<ShowData> {
                                         child: Image.network(
                                           '${listdata[index].imgurl}',
                                           fit: BoxFit.cover,
+                                          scale: 50.0,
                                         ),
                                       ),
                                       Padding(
@@ -114,51 +116,45 @@ class _ShowDataState extends State<ShowData> {
                                           children: [
                                             Text(
                                               'Company: ${listdata[index].company}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 10,
-                                                  fontWeight:
-                                                      FontWeight.bold),
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             Text(
                                               'Model: ${listdata[index].model}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 10,
-                                                  fontWeight:
-                                                      FontWeight.bold),
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             Text(
                                               'HDD: ${listdata[index].hDD}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 10,
-                                                  fontWeight:
-                                                      FontWeight.bold),
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             Text(
                                               'SSD: ${listdata[index].ssd}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 10,
-                                                  fontWeight:
-                                                      FontWeight.bold),
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             Text(
-                                              'Company: ${listdata[index].company}',
-                                              style: TextStyle(
+                                              'Condition: ${listdata[index].condition}',
+                                              style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 10,
-                                                  fontWeight:
-                                                      FontWeight.bold),
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                             Text(
                                               'Price: ${listdata[index].price}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 10,
-                                                  fontWeight:
-                                                      FontWeight.bold),
+                                                  fontWeight: FontWeight.bold),
                                             )
                                           ],
                                         ),
@@ -176,25 +172,69 @@ class _ShowDataState extends State<ShowData> {
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         Update(
-                                                          laptopobj:
-                                                              laptopobj,
+                                                          laptopobj: laptopobj,
                                                         )),
                                               );
                                             },
                                             child: Container(
                                               height: 50,
                                               width: 80,
-                                              child: Center(
+                                              child: const Center(
                                                   child: Text('Update')),
                                               color: Colors.blue,
                                             ),
                                           ),
-                                          Container(
-                                            height: 50,
-                                            width: 80,
-                                            child:
-                                                Center(child: Text('Delete')),
-                                            color: Colors.red,
+                                          GestureDetector(
+                                            onTap: () {
+                                              CoolAlert.show(
+                                                  cancelBtnText: 'No',
+                                                  onCancelBtnTap: () {
+                                                    return;
+                                                  },
+                                                  context: context,
+                                                  type: CoolAlertType.info,
+                                                  text:
+                                                      "Do you Want to Delete this Record",
+                                                  onConfirmBtnTap: () async {
+                                                    try {
+                                                      String uid = FirebaseAuth
+                                                          .instance
+                                                          .currentUser!
+                                                          .uid;
+                                                      await DatabaseHelper()
+                                                          .DeleteRecord(
+                                                              listdata[index]
+                                                                  .id,
+                                                              uid);
+                                                      // await FirebaseFirestore
+                                                      //     .instance
+                                                      //     .collection(
+                                                      //         'Inventory')
+                                                      //     .doc(FirebaseAuth
+                                                      //         .instance
+                                                      //         .currentUser!
+                                                      //         .uid)
+                                                      //     .collection(
+                                                      //         'inventorylist')
+                                                      //     .doc(listdata[index]
+                                                      //         .id)
+                                                      //     .delete();
+                                                    } catch (e) {
+                                                      CoolAlert.show(
+                                                          context: context,
+                                                          type: CoolAlertType
+                                                              .error,
+                                                          title: e.toString());
+                                                    }
+                                                  });
+                                            },
+                                            child: Container(
+                                              height: 50,
+                                              width: 80,
+                                              child: const Center(
+                                                  child: Text('Delete')),
+                                              color: Colors.red,
+                                            ),
                                           )
                                         ],
                                       )

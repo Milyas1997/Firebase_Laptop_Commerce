@@ -15,7 +15,7 @@ class DatabaseHelper {
         email: email,
         password: password,
       );
-    } on FirebaseAuthException  catch (e) {
+    } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         return false;
       } else if (e.code == 'email-already-in-use') {
@@ -78,5 +78,18 @@ class DatabaseHelper {
       'RAM': laptop.rAM,
       'SSD': laptop.ssd,
     });
+  }
+
+  //Delete data from firstore firebase
+
+   DeleteRecord(var id, var uid) async {
+    //var uid = FirebaseAuth.instance.currentUser!.uid;
+    await FirebaseFirestore.instance
+        .collection('Inventory')
+        .doc(uid)
+        .collection('inventorylist')
+        .doc(id)
+        .delete();
+    
   }
 }
